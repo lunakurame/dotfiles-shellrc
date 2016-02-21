@@ -1,0 +1,10 @@
+#!/bin/bash # shebang to enable vi syntax coloring
+
+# Required files
+SHELLRC_REQUIRED=(
+	"$HOME/.birthday"
+	"$HOME/.todo"
+	"$HOME/.calendar/calendar.asatru"
+	"$SHELLRCDIR/bin/calendar2"
+	"$SHELLRCDIR/bin/datediff"
+)

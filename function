@@ -1,0 +1,87 @@
+#!/bin/bash # shebang to enable vi syntax coloring
+
+function shellrc_print_header() {
+	if [ -z "$SHELLRC_NO_HEADER" ]
+	then
+		shellrc_check_required
+		calendar2
+		# TODO new calendar
+		todop
+	fi
+}
+
+function shellrc_check_required() {
+	local i
+	for i in ${SHELLRC_REQUIRED[@]}
+	do
+		if [ ! -e "$i" ]
+		then
+			echo "Missing file: $i"
+		fi
+	done
+}
+
+function vishellrc() {
+	if [ -e "$SHELLRCDIR/$1" ] && [ -n "$1" ]
+	then
+		vi "$SHELLRCDIR/$1"
+	else
+		echo "Wrong file: '$1'"
+	fi
+}
+
+function printarray() {
+	local i
+	for i in `echo $@`
+	do
+		echo $i
+	done
+}
+
+function grepcode() {
+	grep -i "$1" ./**/* 2>&/dev/null
+}
+
+function bp() {
+	if [ -e "$1~" ]
+	then
+		echo "File '$1~' already exists, operation aborted."
+	else
+		cp $1{,~}
+	fi
+}
+
+function md5() {
+	echo -n "$1" | md5sum | cut -d' ' -f1
+}
+
+function tar7z() {
+	local filename="$1.tar.7z"
+	if [ -e "$filename" ]
+	then
+		echo "File '$filename' already exists, operation aborted."
+	else
+		tar cf - "$1" | 7za a -si -mx=9 "$filename"
+	fi
+}
+
+function untar7z() {
+	local filename=$(echo "$1" | rev | cut -d. -f3- | rev)
+	if [ -e "$filename" ]
+	then
+		echo "File '$filename' already exists, operation aborted."
+	else
+		7z x -so "$1" | tar xf -
+	fi
+}
+
+function freedisk() {
+	local list="$(df | grep /dev/mapper | grep -v ' /$' | sort | awk '{print $4}')"
+	local sum=0
+	while read -r line
+	do
+		sum=$(($sum+$line))
+	done <<< "$list"
+	echo "$(($sum*1024/1000000000)) GB\n$(($sum/1024/1024)) GiB\n$(($sum*1024)) B\n$(/usr/bin/printf "%'d" $(($sum*1024))) B"
+}
+

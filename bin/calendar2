@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# $1 - days after, if not set, then default to 7
+# $2 - days before, if not set, then default to 7
+# $3 - custom date used as 'today'
+
+# parse parameters
+if [ -n "$1" ]
+then
+	days_after=$(($1 - 1))
+else
+	days_after=6	# default = 6 means 7 days, it's always 1 less
+fi
+
+if [ -n "$2" ]
+then
+	days_before=$(($2 - 1))
+else
+	days_before=6	# default
+fi
+
+if [ -n "$3" ]
+then
+	today=$(date -d "$3" +%Y-%m-%d)
+else
+	today=$(date +%Y-%m-%d)
+fi
+
+# check if birthdays' data is up to date
+if [[ "$(head -n6 $HOME/.calendar/calendar.birthday | tail -n1 | cut -d' ' -f4 | cut -d'-' -f1)" != "$(date +%Y)" ]]
+then
+	"$HOME/.calendar/generate-birthday.sh"
+fi
+
+# check if there is anything to show
+if [ -n "$(calendar -A $days_after -B $days_before -w 0)" ]
+then
+	# get data
+	calendar_before=$(calendar -A 0 -B $days_before -t $(date -d @$(( $(date -d "$today" +%s) - 86400 )) +%Y%m%d) -w 0)
+	calendar_today=$(calendar -A 0 -B 0 -t $(date -d @$(date -d "$today" +%s) +%Y%m%d) -w 0)
+	calendar_after=$(calendar -A $days_after -B 0 -t $(date -d @$(( $(date -d "$today" +%s) + 86400 )) +%Y%m%d) -w 0)
+
+	# explanation of $(date -d @$(( $(date -d "$today" +%s) - 86400 )) +%Y%m%d):
+	# $(
+	#	date -d @$((
+	#		$(date -d "$today" +%s)	# get today's date in Unix format
+	#		+ 86400 		# add 1 day (60 * 60 * 24 seconds)
+	#	)) +%Y%m%d			# convert to calendar's "-t" switch format
+	# )
+
+	# print
+	echo "$(tput bold)Calendar:$(tput sgr0)"
+	if [ -n "$calendar_before" ]
+	then
+		echo "$(tput setaf 245)$calendar_before$(tput sgr0)"
+	fi
+	if [ -n "$calendar_today" ]
+	then
+		echo "$(tput bold)$(tput setaf 1)$calendar_today$(tput sgr0)"
+	fi
+	if [ -n "$calendar_after" ]
+	then
+		echo "$calendar_after"
+	fi
+fi

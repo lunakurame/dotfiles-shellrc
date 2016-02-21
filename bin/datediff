@@ -1,0 +1,258 @@
+#!/bin/bash
+
+# help
+
+if [[ -z "$1" || -z "$1" || "$1" == '--help' || "$1" == '-h' ]]
+then
+	echo 'Usage: datediff DATE1 DATE2'
+	echo 'Calculate the difference between DATE1 and DATE2.'
+	echo
+	echo 'Date must be in format recognized by "date" program. Following additional '
+	echo 'constants are allowed:'
+	echo
+	echo '	birthday-pc'
+	echo '		uses date stored in /etc/birthday file'
+	echo '	birthday-user'
+	echo '		uses date stored in $HOME/.birthday file'
+	echo '	birthday'
+	echo '		the same as birthday-user'
+	echo '	birthday-NAME'
+	echo '		uses date stored in $HOME/.calendar/birthday.data file for'
+	echo '		entry "NAME"'
+	echo '	birthday:NAME'
+	echo '		the same as birthday-NAME, may be used to force birthday-user '
+	echo '		and birthday-pc to act like birthday-NAME'
+	exit
+fi
+
+# functions
+
+function isLeap()
+{
+	# do not optimize!
+	# it's from wikipedia and it's the only 100% working code
+
+	year=$1
+
+	if (( $(( $year % 4 )) != 0 ))
+	then
+		leap=0
+	elif (( $(( $year % 100 )) != 0 ))
+	then
+		leap=1
+	elif (( $(( $year % 400 )) != 0 ))
+	then
+		leap=0
+	else
+		leap=1
+	fi
+
+	echo $leap;
+}
+
+function getMonthLength()
+{
+	month=$1
+	year=$2
+
+	case $month in
+	1 | 3 | 5 | 7 | 8 | 10 | 12)
+		echo '31'
+		;;
+	4 | 6 | 9 | 11)
+		echo '30'
+		;;
+	2)
+		echo $(( 28 + $(isLeap $year) ))
+		;;
+	*)
+		echo 'error'
+		;;
+	esac
+}
+
+# parse arguments
+
+function parseArg()
+{
+	arg=$1
+
+	case "$arg" in
+	'birthday-pc')
+		date=$(cat '/etc/birthday')
+		;;
+	'birthday-user' | 'birthday')
+		date=$(cat "$HOME/.birthday")
+		;;
+	birthday-* | birthday:*)
+		date=$(echo "$arg" | cut -c 10-)
+		date=$(grep "$date" "$HOME/.calendar/birthday.data" | cut -d'	' -f1)
+		;;
+	*)
+		# 'now', 'tomorrow', etc, and normal dates in all understandable formats are parsed by *date*
+		date=$(date -d "$arg" +%Y-%m-%d 2>&1)
+		;;
+	esac
+
+	# return a YYYY-MM-DD date
+	echo $date
+}
+
+function parseDate()
+{
+	date="$1"
+	arg="$2"
+
+	# check / extract YYYY-MM-DD date (it should be always OK)
+	date=$(echo "$date" | grep -o '[0-9]\{1,\}-[0-9]\{1,2\}-[0-9]\{1,2\}')
+	if [[ -z "$date" ]]
+	then
+		echo "Wrong date format: $arg"
+		exit
+	fi
+
+	# parse date (e.g. 9999-99-99 is OK for grep, but not OK for date)
+	year=$(echo "$date" | cut -d'-' -f1 | sed 's/^0*//')
+	month=$(echo "$date" | cut -d'-' -f2 | sed 's/^0*//')
+	day=$(echo "$date" | cut -d'-' -f3 | sed 's/^0*//')
+
+	# check month
+	if (( $month < 0 || $month > 12 ))
+	then
+		echo "Wrong month: $month in $date"
+		exit
+	fi
+
+	# check day
+	if (( $day < 0 || $day > $(getMonthLength $month $year) ))
+	then
+		echo "Wrong day: $day in $date"
+		exit
+	fi
+}
+
+# parse arguments
+d1=$(parseArg "$1")
+parseDate "$d1" "$1"
+d2=$(parseArg "$2")
+parseDate "$d2" "$2"
+
+# swap dates if 1st one < 2nd
+if (( $(date -d "$d1" +%s) < $(date -d "$d2" +%s) ))
+then
+	tmp=$d1
+	d1=$d2
+	d2=$tmp
+fi
+
+# print dates
+echo "$d2 → $d1"
+
+# calc difference
+
+diff_years=0
+diff_months=0
+diff_days=0
+
+date1=(
+	$(echo $d1 | cut -d'-' -f1 | sed 's/^0*//')
+	$(echo $d1 | cut -d'-' -f2 | sed 's/^0*//')
+	$(echo $d1 | cut -d'-' -f3 | sed 's/^0*//')
+)
+
+date2=(
+	$(echo $d2 | cut -d'-' -f1 | sed 's/^0*//')
+	$(echo $d2 | cut -d'-' -f2 | sed 's/^0*//')
+	$(echo $d2 | cut -d'-' -f3 | sed 's/^0*//')
+)
+
+# calc days
+diff_days=$(( $diff_days + ${date1[2]} - ${date2[2]} ))
+
+if (( $diff_days < 0 ))
+then
+	(( diff_months-- ))
+	diff_days=$(( $diff_days + $(getMonthLength $(( ${date1[1]} - 1 )) ${date1[0]}) ))
+fi
+
+# calc months
+diff_months=$(( $diff_months + ${date1[1]} - ${date2[1]} ))
+
+if (( $diff_months < 0 ))
+then
+	(( diff_years-- ))
+	diff_months=$(( $diff_months + 12 ))
+fi
+
+# calc years
+diff_years=$(( $diff_years + ${date1[0]} - ${date2[0]} ))
+
+# check
+if (( $diff_years < 0 || $diff_months < 0 || $diff_days < 0 ))
+then
+	echo 'Error!'
+	echo "$diff_years years $diff_months months $diff_days days"
+	exit
+fi
+
+# days in total
+total_days=$(( ( $(date -d "$d1" +%s) - $(date -d "$d2" +%s) ) / 60 / 60 / 24 ))
+
+# result (don't show things like "0 years...")
+
+result=''
+
+# add years
+if (( $diff_years == 1 ))
+then
+	result="$diff_years year"
+elif (( $diff_years > 1 ))
+then
+	result="$diff_years years"
+fi
+
+# add months
+if (( $diff_months > 0 ))
+then
+	if [ -n "$result" ]
+	then
+		result="$result "
+	fi
+
+	if (( $diff_months == 1 ))
+	then
+		result="$result$diff_months month"
+	else
+		result="$result$diff_months months"
+	fi
+fi
+
+# add days
+if (( $diff_days > 0 ))
+then
+	if [ -n "$result" ]
+	then
+		result="$result "
+	fi
+
+	if (( $diff_days == 1 ))
+	then
+		result="$result$diff_days day"
+	else
+		result="$result$diff_days days"
+	fi
+fi
+
+if [ -n "$result" ]
+then
+	echo "$result"
+	if (( $total_days == 1 ))
+	then
+		echo "$total_days day in total"
+	else
+		echo "$total_days days in total"
+	fi
+else
+	echo 'dates are equal'
+fi
+

@@ -1,0 +1,26 @@
+#!/bin/bash # shebang to enable vi syntax coloring
+
+case $SHELL_NAME in
+'bash')
+	;;
+'zsh')
+	FPATH="$FPATH:$ZDOTDIR/custom/completion"
+	;;
+*)
+	echo 'shellrc: Unrecognized shell! [file: env]'
+	;;
+esac
+
+BASHDOTDIR=${BASHDOTDIR:-$HOME}
+ZDOTDIR=${ZDOTDIR:-$HOME}
+
+PATH="$PATH:/sbin:/usr/sbin:/usr/local/sbin" # sudo
+PATH="$PATH:$SHELLRCDIR/bin"
+PATH="$PATH:$HOME/bin"
+PATH="$PATH:$HOME/.local/bin"
+PATH="$PATH:/opt/android-sdk-linux/tools"
+PATH="$PATH:/opt/android-sdk-linux/platform-tools"
+
+TERM='xterm-256color'
+GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01' # colored GCC warnings and errors
+

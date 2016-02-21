@@ -1,0 +1,7 @@
+#compdef vishellrc
+
+_vishellrc() {
+	_arguments "1:file:($(ls -p $SHELLRCDIR | grep -v /))"
+}
+ 
+_vishellrc "$@"

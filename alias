@@ -1,0 +1,78 @@
+#!/bin/bash # shebang to enable vi syntax coloring
+
+# alias for su, because su doesn't work anyway, and that's better than sudo su...
+case $SHELL_NAME in
+'bash')
+	alias su='sudo SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" bash'
+	;;
+'zsh')
+	alias su='sudo SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" zsh'
+	;;
+*)
+	echo 'shellrc: Unrecognized shell! [file: alias]'
+	;;
+esac
+
+# shells
+alias bash='SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" bash'
+alias zsh='SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" zsh'
+alias reset='SHELLRC_NO_HEADER=; clear; shellrc_print_header'
+
+# cd
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+alias .......='cd ../../../../../..'
+alias ........='cd ../../../../../../..'
+alias .........='cd ../../../../../../../..'
+alias ..........='cd ../../../../../../../../..'
+alias ...........='cd ../../../../../../../../../..'
+
+# ls
+alias ls='ls --color=tty'
+alias lsc='ls --color=always'
+alias ll='ls -alF --time-style=long-iso'
+alias llc='ll --color=always'
+alias la='ls -A'
+alias lac='la --color=always'
+alias lf='ls -CF'
+alias lfc='lf --color=always'
+
+# tools
+alias l='less'
+alias g='grep'
+alias em='truncate -s 0'
+alias bai='exit'
+alias sag='sudo apt-get'
+alias sap='sudo aptitude'
+alias locate='locate --nofollow'
+alias wtf='dmesg -w --time-format iso'
+alias wtf2='less /'
+alias watchdd="watch -n5 'sudo kill -USR1 \$(pgrep ^dd)'"
+alias usshfs='fusermount -u'
+alias passgen='apg -a1 -m20 -x20'
+alias date2='date +%Y-%m-%d'
+alias time2='date +%H:%M:%S'
+alias cal='ncal -MC'
+alias calendar.asatru="calendar -f $HOME/.calendar/calendar.asatru"
+alias birthday="cat $HOME/.birthday"
+alias birthtime='datediff now birthday-pc'
+alias todop="test -s $HOME/.todo && ( echo; cat $HOME/.todo )"
+alias todoe="vi $HOME/.todo"
+alias todor="truncate -s 0 $HOME/.todo"
+
+# vi
+alias vitodo='todoe'
+alias vibashrc="vi $BASHDOTDIR/.bashrc"
+alias vizshrc="vi $ZDOTDIR/.zshrc"
+
+# programming
+alias cmr='clear; make && ./main'
+alias cmc='clear; make clean'
+
+# gui
+alias gedit='GTK_THEME=Adwaita:dark gedit'
+alias alert='notify-send -u low -i "$([ $? = 0 ] && echo terminal || echo error)" "Terminal" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"' # e.g.: sleep 1; alert
+

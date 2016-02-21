@@ -1,0 +1,3 @@
+#!/bin/bash
+rm ~/.thumbnails/normal/* ~/.thumbnails/large/* ~/.thumbnails/fail/gnome-thumbnail-factory/* ~/.cache/thumbnails/fail/gnome-thumbnail-factory/* ~/.cache/thumbnails/normal/* ~/.cache/thumbnails/large/*
+

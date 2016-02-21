@@ -1,0 +1,34 @@
+#compdef hashbase
+
+_hashbase() {
+	local curcontext="$curcontext" state line
+	typeset -A opt_args
+
+	_arguments \
+		'1: :->action' \
+		'*: :->param1'
+
+	case $state in
+	action)
+		_arguments '1:action:(generate update search search-cybarch remove-deleted remove-modified remove-database help)'
+		;;
+	param1)
+		case $words[2] in
+		generate)
+			_arguments '2:directory:_files -/'
+			;;
+		update)
+			_arguments '2:directory:_files -/'
+			;;
+		search | search-cybarch)
+			_arguments '*:file:_files'
+			;;
+		*)
+			_arguments '2:no more arguments:'
+			;;
+		esac
+		;;
+	esac
+}
+ 
+_hashbase "$@"
