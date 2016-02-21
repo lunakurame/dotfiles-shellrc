@@ -46,7 +46,7 @@ zstyle ":completion:*:descriptions" format "%B%d%b"
 # Oh My Zsh config
 
 # Path to your oh-my-zsh installation.
-export ZSH="$ZDOTDIR/.oh-my-zsh"
+export ZSH="$ZDOTDIR/oh-my-zsh"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
