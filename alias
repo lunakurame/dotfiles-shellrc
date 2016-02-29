@@ -43,6 +43,7 @@ alias lfc='lf --color=always'
 # tools
 alias l='less'
 alias g='grep'
+alias tree='tree --charset=utf8'
 alias em='truncate -s 0'
 alias bai='exit'
 alias sag='sudo apt-get'
