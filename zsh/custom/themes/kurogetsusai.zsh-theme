@@ -10,7 +10,11 @@ function prompt_char() {
 function preprompt() {
 	if [ -n "$PREPROMPT" ]
 	then
-		echo "$PREPROMPT "
+		echo -n "$PREPROMPT "
+	fi
+	if [[ "$SESSION_ORIGIN" = 'ssh' ]]
+	then
+		echo -n 'ssh '
 	fi
 }
 

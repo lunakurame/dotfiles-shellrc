@@ -19,10 +19,11 @@ then
 		SESSION_ORIGIN='local'
 	fi
 
-	# SSH preprompt
-	if [[ "$SESSION_ORIGIN" = 'ssh' ]]
-	then
-		PREPROMPT=">$PREPROMPT"
-	fi
+#	# SSH preprompt
+#	if [[ "$SESSION_ORIGIN" = 'ssh' ]]
+#	then
+#		PREPROMPT=">$PREPROMPT"
+#	fi
+	PREPROMPT=''
 fi
 
