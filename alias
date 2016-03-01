@@ -3,10 +3,10 @@
 # alias for su, because su doesn't work anyway, and that's better than sudo su...
 case $SHELL_NAME in
 'bash')
-	alias su='sudo SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" bash'
+	alias su='sudo SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" SESSION_ORIGIN="$SESSION_ORIGIN" bash'
 	;;
 'zsh')
-	alias su='sudo SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" zsh'
+	alias su='sudo SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" SESSION_ORIGIN="$SESSION_ORIGIN" zsh'
 	;;
 *)
 	echo 'shellrc: Unrecognized shell! [file: alias]'
@@ -14,8 +14,8 @@ case $SHELL_NAME in
 esac
 
 # shells
-alias bash='SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" bash'
-alias zsh='SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" zsh'
+alias bash='SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" SESSION_ORIGIN="$SESSION_ORIGIN" bash'
+alias zsh='SHELLRC_NO_HEADER=yes PREPROMPT=">$PREPROMPT" SESSION_ORIGIN="$SESSION_ORIGIN" zsh'
 alias reset='SHELLRC_NO_HEADER=; clear; shellrc_print_header'
 
 # cd

@@ -8,3 +8,21 @@ SHELLRC_REQUIRED=(
 	"$SHELLRCDIR/bin/calendar2"
 	"$SHELLRCDIR/bin/datediff"
 )
+
+# Session origin
+if [ -z "$SESSION_ORIGIN" ]
+then
+	if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]
+	then
+		SESSION_ORIGIN='ssh'
+	else
+		SESSION_ORIGIN='local'
+	fi
+
+	# SSH preprompt
+	if [[ "$SESSION_ORIGIN" = 'ssh' ]]
+	then
+		PREPROMPT=">$PREPROMPT"
+	fi
+fi
+
