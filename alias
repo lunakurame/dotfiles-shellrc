@@ -49,6 +49,7 @@ alias bai='exit'
 alias sag='sudo apt-get'
 alias sap='sudo aptitude'
 alias locate='locate --nofollow'
+alias daemon='service'
 alias wtf='dmesg -w --time-format iso'
 alias wtf2='less /var/log/syslog'
 alias watchdd="watch -n5 'sudo kill -USR1 \$(pgrep ^dd)'"
