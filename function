@@ -85,3 +85,12 @@ function freedisk() {
 	echo "$(($sum*1024/1000000000)) GB\n$(($sum/1024/1024)) GiB\n$(($sum*1024)) B\n$(/usr/bin/printf "%'d" $(($sum*1024))) B"
 }
 
+function kk() {
+	# params dont work
+	ll
+	if [ -d .git ]
+	then
+		echo
+		git status
+	fi
+}
