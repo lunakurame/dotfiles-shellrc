@@ -14,6 +14,16 @@ esac
 BASHDOTDIR=${BASHDOTDIR:-$HOME}
 ZDOTDIR=${ZDOTDIR:-$HOME}
 
+if [ -z "$SESSION_ORIGIN" ]
+then
+	if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]
+	then
+		SESSION_ORIGIN='ssh'
+	else
+		SESSION_ORIGIN='local'
+	fi
+fi
+
 PATH="$PATH:/sbin:/usr/sbin:/usr/local/sbin" # sudo
 PATH="$PATH:$SHELLRCDIR/bin"
 PATH="$PATH:$HOME/bin"

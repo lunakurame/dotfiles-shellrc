@@ -14,7 +14,7 @@ function preprompt() {
 	fi
 	if [[ "$SESSION_ORIGIN" = 'ssh' ]]
 	then
-		echo -n 'ssh '
+		echo -n '≍ '
 	fi
 }
 

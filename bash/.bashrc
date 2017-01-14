@@ -94,14 +94,14 @@ then
 		then
 			if [[ "$SESSION_ORIGIN" = 'ssh' ]]
 			then
-				PS1='\[\033[01;31m\]ssh ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
+				PS1='\[\033[01;31m\]≍ ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
 			else
 				PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
 			fi
 		else
 			if [[ "$SESSION_ORIGIN" = 'ssh' ]]
 			then
-				PS1='\[\033[01;31m\]${PREPROMPT} ssh ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
+				PS1='\[\033[01;31m\]${PREPROMPT} ≍ ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
 			else
 				PS1='\[\033[01;31m\]${PREPROMPT} ${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
 			fi
@@ -111,14 +111,14 @@ then
 		then
 			if [[ "$SESSION_ORIGIN" = 'ssh' ]]
 			then
-				PS1='\[\033[01;31m\]ssh ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[01;34m\]@\[\033[01;32m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
+				PS1='\[\033[01;31m\]≍ ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[01;34m\]@\[\033[01;32m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
 			else
 				PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[01;34m\]@\[\033[01;32m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
 			fi
 		else
 			if [[ "$SESSION_ORIGIN" = 'ssh' ]]
 			then
-				PS1='\[\033[01;31m\]${PREPROMPT} ssh ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[01;34m\]@\[\033[01;32m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
+				PS1='\[\033[01;31m\]${PREPROMPT} ≍ ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[01;34m\]@\[\033[01;32m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
 			else
 				PS1='\[\033[01;31m\]${PREPROMPT} ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[01;34m\]@\[\033[01;32m\]\h\[\033[01;34m\] \[\033[00;33m\][$SHELL_NAME]\[\033[01;34m\] \w \[\033[01;34m\]\$\[\033[00m\] '
 			fi
