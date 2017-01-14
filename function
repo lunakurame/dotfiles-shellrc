@@ -39,7 +39,7 @@ function printarray() {
 }
 
 function grepcode() {
-	grep -i "$1" ./**/* 2>&/dev/null
+	grep --exclude 'node_modules/*' -i "$1" ./**/* 2>&/dev/null
 }
 
 function bp() {
