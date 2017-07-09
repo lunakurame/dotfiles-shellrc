@@ -33,12 +33,12 @@ then
 fi
 
 # check if there is anything to show
-if [ -n "$(calendar -A $days_after -B $days_before -w 0)" ]
+if [ -n "$(calendar -A $days_after -B $days_before -e 0 | grep .)" ]
 then
 	# get data
-	calendar_before=$(calendar -A 0 -B $days_before -t $(date -d @$(( $(date -d "$today" +%s) - 86400 )) +%Y%m%d) -w 0)
-	calendar_today=$(calendar -A 0 -B 0 -t $(date -d @$(date -d "$today" +%s) +%Y%m%d) -w 0)
-	calendar_after=$(calendar -A $days_after -B 0 -t $(date -d @$(( $(date -d "$today" +%s) + 86400 )) +%Y%m%d) -w 0)
+	calendar_before=$(calendar -A 0 -B $days_before -t $(date -d @$(( $(date -d "$today" +%s) - 86400 )) +%Y%m%d) -e 0 | grep .)
+	calendar_today=$(calendar -A 0 -B 0 -t $(date -d @$(date -d "$today" +%s) +%Y%m%d) -e 0 | grep .)
+	calendar_after=$(calendar -A $days_after -B 0 -t $(date -d @$(( $(date -d "$today" +%s) + 86400 )) +%Y%m%d) -e 0 | grep .)
 
 	# explanation of $(date -d @$(( $(date -d "$today" +%s) - 86400 )) +%Y%m%d):
 	# $(
