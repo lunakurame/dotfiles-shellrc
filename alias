@@ -76,6 +76,11 @@ alias vizshrc="vi $ZDOTDIR/.zshrc"
 alias cmr='clear; make && ./main'
 alias cmc='clear; make clean'
 
+# mpv
+alias mpa="mpv --no-video --no-audio-display"
+alias mpv-npc="mpv --audio-pitch-correction=no"
+alias mpa-npc="mpv --no-video --no-audio-display --audio-pitch-correction=no"
+
 # gui
 alias gedit='GTK_THEME=Adwaita:dark gedit'
 alias alert='notify-send -u low -i "$([ $? = 0 ] && echo terminal || echo error)" "Terminal" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"' # e.g.: sleep 1; alert
